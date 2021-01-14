@@ -15,6 +15,7 @@ import yahoofinance.YahooFinance;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -44,9 +45,15 @@ public class StockResource {
 
     private Stock getStockPrice(String quote) {
         try {
-            return YahooFinance.get(quote);
+            String[] symbols = new String[] {"INTC", "BABA", "TSLA", "AIR.PA", "YHOO"};
+            Map<String, Stock> stocks = YahooFinance.get(symbols);
+            Stock stock = YahooFinance.get(quote);
+            return stock;
         } catch (IOException e) {
-            e.printStackTrace();
+            String s = e.getMessage();
+            return new Stock(quote);
+        } catch (Throwable ex){
+            String s = ex.getMessage();
             return new Stock(quote);
         }
     }

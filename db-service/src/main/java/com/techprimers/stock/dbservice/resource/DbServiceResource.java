@@ -5,6 +5,7 @@ import com.techprimers.stock.dbservice.model.Quotes;
 import com.techprimers.stock.dbservice.repository.QuotesRepository;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,8 +41,13 @@ public class DbServiceResource {
 
         List<Quote> quotes = quotesRepository.findByUserName(username);
         quotesRepository.delete(quotes);
-
-        return getQuotesByUserName(username);
+        List<String> result = new ArrayList<>();
+        if (getQuotesByUserName(username).isEmpty()) {
+            result.add(username + " was deleted");
+        } else {
+            return getQuotesByUserName(username);
+        }
+        return result;
     }
 
 
